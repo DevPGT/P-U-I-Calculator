@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS Code 1</title>
+</head>
+<body>
+    <center>
+        <h1 id="title">Calculadora de circuitos</h1>
+        
+        <h6> -- > Para valores nulo utilize 0!</h6>
+        <fieldset>
+            <legend>Valores base</legend>
+        <form>
+            <h4>Tensão: <input type="number" id="V" class="email-field" placeholder="127" onkeypress="calculate()"> Volts
+            <h4>Corrente: <input type="number" id="A" class="email-field" placeholder="1" onkeypress="calculate()"> Amper</h4>
+            <h4>Resistencia: <input type="number" id="R" class="email-field" placeholder="1000" onkeypress="calculate()"> Ohms</h4>
+        </form>
+        </fieldset>
+        <br>
+        <fieldset id="results">
+            <legend>Calculos realizados</legend>
+            <div id="quad_pot">
+                <h2 id="grand" onclick="calculate()">Potencia: </h1><h2 id="pot_value">0W</h2>
+            </div>
+            <div id="quad_res">
+                <h2 id="grand" onclick="calculate()">Resistencia: </h1><h2 id="ohm_value">0 Ohm</h2>
+            </div>
+            <div id="quad_current">
+                <h2 id="grand" onclick="calculate()">Corrente: </h1><h2 id="current_value">0A</h2>
+            </div>
+            <div id="quad_power">
+                <h2 id="grand" onclick="calculate()">Tensão: </h1><h2 id="power_value">0V</h2>
+            </div>
+        
+        </fieldset>
+    </center>
+    <style type="text/css">
+        fieldset#results{
+            width: 600px;
+            align-self: center;
+            height: 350px;
+            border: 1px solid rgb(255, 255, 255) !important;
+            margin: 0;
+            padding: 10px;       
+            border-radius:4px;
+            background-color:#a79d9d46;
+        }
+        fieldset{
+            width: 400px;
+            align-self: center;
+            height: 290px;
+            border: 1px solid rgb(255, 255, 255) !important;
+            margin: 0;
+            padding: 10px;       
+            border-radius:4px;
+            background-color:#08080850;
+        }
+        #quad_pot{position:relative; margin-top:10px; margin-left:300px; float:center; text-align: center}
+        #quad_res{position:absolute;margin-top:-200px; margin-left:50px; float:center; text-align: center}
+        #quad_current{position:relative; margin-top:-30px; margin-left:300px; float:center; text-align: center}
+        #quad_power{position:absolute;margin-top:-200px; margin-left:65px; float:center; text-align: center}
+        body{
+            /*padding-top: 12%;*/
+            background-image: linear-gradient(-90deg, rgb(105 ,105, 172), rgb(82, 82, 230));
+            color: white;
+            font: normal 20pt Arial;
+        }
+        h2#grand{
+            color:darkorange;
+            font-style: oblique;
+        }
+        body {
+	background-color: #f05133;
+	text-align: center;
+	font-family: Lato, Tahoma, sans-serif;
+}
+
+/* style input field text */
+::-webkit-input-placeholder {
+   color: #f4f2ca;
+   opacity: .8;
+}
+
+/* Input field that looks like a button */
+.email-field {
+	width: 50px;
+	display: inline-block;
+	color: #f4f2ca;
+	text-align: center;
+	background-color: #e75858;
+	padding: .9em 1.8em;
+	border: none;
+	cursor: pointer;
+	outline: none;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 14px;
+	border-radius: 14px;
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+	transition: all .1s linear;
+}
+.email-field:hover {
+	background-color: #d0432a;
+}
+
+/* after button is clicked */
+.email-field.active {
+	width: 200px;
+	outline: none;
+	color: #efaa9d;
+	text-align: left;
+	cursor: inherit;
+}
+    </style>
+    <script>
+        /*
+        window.confirm("Este site usa cookies voce aceita isso ?");
+        var fatura_mes1 = window.prompt("Qual o valor da primeira fatura ?");
+        var fatura_mes2 = window.prompt("Qual valor da segunda fatura ?")
+        var media = (Number.parseFloat(fatura_mes1) + Number.parseFloat(fatura_mes2))
+        var total_kw = window.prompt("Quantos kW foram gastos nos 2 meses ?")
+        var media_kw = (media  / total_kw)
+        document.write(`<pre><center>Com base nos valores ${fatura_mes1} e ${fatura_mes2} 
+            pode se obter uma media do valor do kW em sua residencia\nValor: <strong>R$ ${media_kw}</strong></pre></center>`)
+        */
+        var pot_write = window.document.getElementById('pot_value')
+        var ohm_write = window.document.getElementById('ohm_value')
+        var current_write = window.document.getElementById('current_value')
+        var power_write = window.document.getElementById('power_value')
+        var V = window.document.getElementById('V')
+        var A = window.document.getElementById('A')
+        var R = window.document.getElementById('R')
+        function no_power(){
+            if(V.value == 0 || V.value == null){
+                console.log("Retorno: Tensão: Não informado!" )
+                return true
+            }else{
+                console.log("Tensão: informado!" )
+                return false
+            }
+        }
+        function no_current(){
+            if(A.value == 0 || A.value == null){
+                console.log("Retorno: Corrente: Não informado!" )
+                return true
+            }else{
+                console.log("Corrente: informado!" )
+                return false
+            }
+        }
+        function no_ohm(){
+            if(R.value == 0 || R.value == null){
+                console.log("Retorno: Resistencia: Não informado!" )
+                return true
+            }else{
+                console.log("Resistencia: informado!" )
+                return false
+            }
+            
+        }
+        function calculate(){
+            if( !no_current() && !no_ohm() ){
+                var P = Number(R.value) * (Number(A.value)**2)
+                pot_write.innerText =  P.toFixed(3) + " W"
+                var I = (Number(A.value)**2).toFixed(3)
+                var U = R.value * I
+                power_write.innerText = U + "V"  
+                current_write.innerText =  I + "A"
+                ohm_write.innerText = R.value + " OhmC"
+            }else if( !no_ohm() && !no_power() ){
+                    var I = (Number(V.value) / Number(R.value))
+                    var P = Number(V.value) * I
+                    pot_write.innerText =  P + " W"
+                    power_write.innerText = V.value + "V"  
+                    current_write.innerText =  I + "A"
+                    ohm_write.innerText = R.value + " OhmB"
+                }else if( !no_power() && !no_current()){
+                    var P = Number(V.value) * Number(A.value)
+                    pot_write.innerText =  P + " W"
+                    power_write.innerText = V.value + "V"  
+                    current_write.innerText =  A.value + "A"
+                    var Re = Number(V.value) / Number(A.value)
+                    ohm_write.innerText = Re.toFixed(3) + " OhmA"
+                }
+
+            }
+
+
+    </script>
+</body>
+</html>
